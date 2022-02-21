@@ -1,0 +1,245 @@
+@font-face {
+    font-family: 'bad_grunge';
+    src: url('../../static/font/bad_grunge.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'oribitron';
+    src: url('../../static/font/oribitron.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream4';
+    src: url('../../static/font/SCDream4.otf') format('opentype');
+}
+
+body {
+    margin: 0;
+    background-image: url('../../static/image/joker.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+li {
+    list-style: none;
+    color: white;
+}
+
+.content {
+    position: relative;
+}
+
+.main-title {
+    font-weight: lighter;
+    font-family: 'bad_grunge', sans-serif;
+    line-height: 0.7;
+    font-size: 300px;
+    color: white;
+    text-align: right;
+    margin: 110px 30px 110px 0;
+}
+
+.navbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.navbar .navbar-brand {
+    margin: 20px;
+}
+
+.navbar .navbar-brand h1 {
+    margin: 0;
+    font-family: 'oribitron', sans-serif;
+}
+
+.navbar .navbar-nav {
+    display: flex;
+    margin: 0;
+}
+
+.navbar .navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    margin: 20px 40px;
+}
+
+.nav-item a {
+    font-family: 'SCDream4', sans-serif;
+}
+
+.login-btn {
+    border: solid 0.5px #ffffff;
+    padding: 0 30px;
+    border-radius: 25px;
+}
+
+.login-btn a {
+    font-family: 'oribitron', sans-serif;
+}
+
+.main-background {
+    width: max-content;
+}
+
+.movie-list {
+    margin: 100px 30px 0 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(17, 17, 17, 0.9);
+    align-items: center;
+}
+
+.movie-list ul {
+    font-family: 'SCDream4', sans-serif;
+    display: flex;
+}
+
+.movie-list ul li {
+    margin: 0 50px 30px 50px;
+}
+
+.movie-list ul li a:hover {
+    color: red;
+}
+
+.movie-item {
+    width: 100px;
+    height: 150px;
+    background-color: white;
+}
+
+/* login */
+
+.login-form {
+    background-color: rgba(17, 17, 17, 0.9);
+    margin: 200px 30px 0 30px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form .form-title {
+    color: white;
+    font-family: 'oribitron', sans-serif;
+    margin: 0;
+}
+
+.login-form input {
+    font-family: oribitron, sans-serif;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: solid 1px #ffffff;
+    color: white;
+    margin: 15px;
+    font-size: 17px;
+    padding: 5px 0 5px 0;
+    width: 400px;
+}
+
+.login-form input:focus {
+    border-bottom: solid 1px red;
+}
+
+.login-form input::placeholder {
+    color: white;
+}
+
+.login-form button {
+    margin: 30px 0 0 0;
+    background-color: transparent;
+    font-family: oribitron, sans-serif;
+    color: white;
+    border: solid 1px red;
+    font-size: 23px;
+    padding: 8px 0;
+    width: 400px;
+    cursor: pointer;
+}
+
+.login-form .sign-up-btn {
+    font-family: oribitron, sans-serif;
+    justify-content: flex-end;
+    display: flex;
+    color: red;
+}
+
+.login-form .sign-up-btn:hover {
+    text-decoration: underline;
+}
+
+.login-form .sign-up {
+    display: flex;
+    width: 400px;
+    justify-content: flex-end;
+    font-size: 13px;
+}
+
+.login-form p {
+    font-family: oribitron, sans-serif;
+    color: white;
+    margin: 0 10px 0 0;
+}
+
+/* sign up */
+.sign-up-form {
+    background-color: rgba(17, 17, 17, 0.9);
+    margin: 200px 30px 0 30px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-up-form .form-title {
+    color: white;
+    font-family: 'oribitron', sans-serif;
+    margin: 0;
+}
+
+.sign-up-form input {
+    font-family: oribitron, sans-serif;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: solid 1px #ffffff;
+    color: white;
+    margin: 15px;
+    font-size: 17px;
+    padding: 5px 0 5px 0;
+    width: 400px;
+}
+
+.sign-up-form input:focus {
+    border-bottom: solid 1px red;
+}
+
+.sign-up-form input::placeholder {
+    color: white;
+}
+
+.sign-up-form button {
+    margin: 30px 0 0 0;
+    background-color: transparent;
+    font-family: oribitron, sans-serif;
+    color: white;
+    border: solid 1px red;
+    font-size: 23px;
+    padding: 8px 0;
+    width: 400px;
+    cursor: pointer;
+}
