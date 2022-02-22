@@ -1,0 +1,39 @@
+{% extends 'movie/header.html' %}
+
+{% block content %}
+    <div class="movie-score-list">
+        <div class="search">
+            <a href="{% url 'add_post' %}" class="add-post">글쓰기</a>
+            <input type="text" placeholder="search">
+            <button type="submit" class="search-btn"><img src="../../static/image/magnifying-glass.png"></button>
+        </div>
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%">영화</th>
+                    <th style="width: 55%">제목</th>
+                    <th style="width: 10%">작성자</th>
+                    <th style="width: 12%">작성일</th>
+                    <th style="width: 8%">별점</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>언차티드</td>
+                    <td>[2.18~20 북미 박스오피스] 언차티드,북미에서도 1위를 차지하다</td>
+                    <td>sch0****</td>
+                    <td>2020.02.22</td>
+                    <td>❤️❤️🤍🤍🤍</td>
+                </tr>
+                <tr>
+                    <td>언차티드</td>
+                    <td>[2.18~20 북미 박스오피스] 언차티드,북미에서도 1위를 차지하다</td>
+                    <td>sch0****</td>
+                    <td>2020.02.22</td>
+                    <td>❤️❤️🤍🤍🤍</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

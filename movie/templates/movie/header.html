@@ -10,9 +10,24 @@
     <div class="navbar">
         <a class="navbar-brand" href="{% url 'movie_main' %}"><h1>movie</h1></a>
         <ul class="navbar-nav">
-            <li class="nav-item"><a href="{% url 'movie_rank' %}">영화 랭킹</a></li>
-            <li class="nav-item"><a href="{% url 'movie_score' %}">평점 / 리뷰</a></li>
-            <li class="nav-item login-btn"><a href="{% url 'login' %}">LOGIN</a></li>
+            <li class="nav-item drop-down">
+                <button href="#">영화 랭킹</button>
+                <ul>
+                    <li><a href="{% url 'movie_rank_reservation' %}">예매순</a></li>
+                    <li><a href="{% url 'movie_rank_release' %}">개봉순</a></li>
+                    <li><a href="{% url 'movie_rank_rating' %}">평점순</a></li>
+                    <li><a href="{% url 'movie_rank_like' %}">좋아요순</a></li>
+                </ul>
+            </li>
+            <li class="nav-item"><a href="{% url 'movie_post' %}">평점 / 리뷰</a></li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <p>{{ user.first_name }}{{ user.last_name }}님</p>
+                    <a class='logout-btn' href="{% url 'logout' %}">LOGOUT</a>
+                </li>
+            {% else %}
+                <li class="nav-item login-btn"><a href="{% url 'login' %}">LOGIN</a></li>
+            {% endif %}
         </ul>
     </div>
     <div class="content">

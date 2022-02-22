@@ -13,11 +13,23 @@
     src: url('../../static/font/SCDream4.otf') format('opentype');
 }
 
+@font-face {
+    font-family: 'SCDream5';
+    src: url('../../static/font/SCDream5.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SCDream6';
+    src: url('../../static/font/SCDream6.otf') format('opentype');
+}
+
+/*---------------------------- header ----------------------------*/
+
 body {
     margin: 0;
     background-image: url('../../static/image/joker.jpeg');
-    background-size: cover;
     background-repeat: no-repeat;
+    background-color: black;
 }
 
 a {
@@ -69,59 +81,186 @@ li {
     margin: 0;
 }
 
+.navbar > ul > .drop-down {
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+}
+
+.navbar .navbar-nav .drop-down:hover ul {
+    display: flex;
+}
+
+.navbar > ul > li > ul {
+    display: none;
+    z-index: 10000000;
+    background-color: rgba(17, 17, 17, 0.9);
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 70px;
+    padding: 0;
+    line-height: 3;
+    width: 140px;
+}
+
+.drop-down button {
+    font-family: SCDream4, sans-serif;
+    font-size: 16px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar > ul > li:hover > ul {
+    display: flex;
+}
+
+.navbar > ul > li > ul > li > a:hover {
+    color: red;
+}
+
 .navbar .navbar-nav .nav-item {
     display: flex;
     align-items: center;
-    margin: 20px 40px;
+    padding: 20px 40px;
+}
+
+.navbar .navbar-nav .nav-item p {
+    font-family: oribitron, SCDream4, sans-serif;
+    color: white;
+    margin: 0 10px 0 0;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .navbar-nav .nav-item .logout-btn {
+    color: red;
+    font-size: 13px;
+    border: solid 1px red;
+    padding: 4px;
+}
+
+.navbar .navbar-nav .nav-item p:hover {
+    text-decoration: underline;
 }
 
 .nav-item a {
     font-family: 'SCDream4', sans-serif;
 }
 
-.login-btn {
-    border: solid 0.5px #ffffff;
-    padding: 0 30px;
-    border-radius: 25px;
-}
-
 .login-btn a {
     font-family: 'oribitron', sans-serif;
+    border: solid 0.5px #ffffff;
+    padding: 10px 30px;
+    border-radius: 25px;
 }
 
 .main-background {
     width: max-content;
 }
 
+/*---------------------------- movie-rank ----------------------------*/
+
 .movie-list {
+    font-family: SCDream4, sans-serif;
     margin: 100px 30px 0 30px;
     padding: 30px;
     display: flex;
     flex-direction: column;
     background-color: rgba(17, 17, 17, 0.9);
+}
+
+.movie-list .movie-list-title {
+    display: flex;
+    align-items: flex-end;
+}
+
+.movie-list div h1 {
+    color: white;
+    font-family: SCDream4, sans-serif;
+    font-size: 30px;
+    margin: 0 20px 0 0;
+}
+
+.movie-list .movie-list-title p {
+    margin: 0 0 4px 0;
+    color: white;
+}
+
+.movie-list .movie-info div .l-flex-row {
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
-.movie-list ul {
-    font-family: 'SCDream4', sans-serif;
+.movie-list .movie-info div p {
+    margin: 8px 0;
+}
+
+.movie-list .movie-info div .l-flex-row p {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.f-17 {
+    font-family: SCDream5, sans-serif;
+    font-size: 19px !important;
+}
+
+.l-flex-row {
     display: flex;
+    flex-direction: row;
+    position: relative;
 }
 
-.movie-list ul li {
-    margin: 0 50px 30px 50px;
-}
-
-.movie-list ul li a:hover {
-    color: red;
-}
-
-.movie-item {
+.l-flex-row .st_off {
+    float: left;
+    overflow: hidden;
     width: 100px;
-    height: 150px;
-    background-color: white;
+    position: relative;
+    margin-right: 10px;
 }
 
-/* login */
+.l-flex-row .st_on {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.l-flex-row .movie_actor {
+    width: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.movie-list .movie-info div .l-flex-row .movie_rating {
+    font-family: SCDream6, sans-serif;
+    font-size: 17px;
+}
+
+.movie-list .movie-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px #808080 solid;
+}
+
+.movie-list .movie-info div .movie-img{
+    width: 110px;
+    height: 160px;
+    margin: 0 30px 0 0;
+}
+
+.w-30 {
+    width: 30px !important;
+}
+
+/*---------------------------- login ----------------------------*/
 
 .login-form {
     background-color: rgba(17, 17, 17, 0.9);
@@ -195,7 +334,8 @@ li {
     margin: 0 10px 0 0;
 }
 
-/* sign up */
+/*---------------------------- sign up ----------------------------*/
+
 .sign-up-form {
     background-color: rgba(17, 17, 17, 0.9);
     margin: 200px 30px 0 30px;
@@ -221,7 +361,11 @@ li {
     margin: 15px;
     font-size: 17px;
     padding: 5px 0 5px 0;
-    width: 400px;
+    width: 600px;
+}
+
+.sign-up-form .form-name input {
+    width: 280px;
 }
 
 .sign-up-form input:focus {
@@ -242,4 +386,288 @@ li {
     padding: 8px 0;
     width: 400px;
     cursor: pointer;
+}
+
+/*---------------------------- score-list ----------------------------*/
+
+.movie-score-list {
+    font-family: oribitron, SCDream4, sans-serif;
+    margin: 100px 30px 0 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(17, 17, 17, 0.9);
+}
+
+.movie-score-list .search {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 30px 30px 0;
+}
+
+.movie-score-list .search input {
+    font-family: oribitron, sans-serif;
+    background-color: transparent;
+    color: white;
+    border-bottom: 1px solid red;
+    border-left: 1px solid red;
+    border-top: 1px solid red;
+    border-right: none;
+    padding: 10px;
+    width: 20%;
+    outline: none;
+}
+
+.movie-score-list .search .search-btn {
+    background-color: transparent;
+    color: white;
+    font-family: SCDream4, sans-serif;
+    border-left: none;
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-top: 1px solid red;
+    cursor: pointer;
+}
+
+.movie-score-list .search .add-post {
+    background-color: transparent;
+    color: white;
+    font-family: SCDream4, sans-serif;
+    border: solid 1px white;
+    cursor: pointer;
+    margin-right: 20px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.movie-score-list .search button img {
+    width: 20px;
+    height: auto;
+}
+
+.movie-score-list .score-table {
+    color: white;
+    width: 100%;
+    margin-bottom: 13px;
+    table-layout: fixed;
+    border-top: solid 1px #c9c9c9;
+}
+
+.movie-score-list .score-table thead tr th {
+    border-bottom: solid 1px #c9c9c9;
+    padding: 10px 0;
+}
+
+.movie-score-list .score-table tbody tr td {
+    border-bottom: 1px solid #6b6b6b;
+    padding: 20px 0;
+}
+
+/*---------------------------- add-post ----------------------------*/
+
+.add-post-content {
+    font-family: oribitron, SCDream4, sans-serif;
+    margin: 100px 30px 0 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(17, 17, 17, 0.9);
+}
+
+.add-post-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-post-content form input {
+    background-color: transparent;
+    border: none;
+    border-bottom: solid 1px white;
+    color: white;
+    outline: none;
+    font-family: oribitron, SCDream4, sans-serif;
+    padding: 10px;
+}
+
+.add-post-content form input:focus {
+    border-bottom: solid 1px red;
+}
+
+.add-post-content form textarea {
+    background-color: transparent;
+    border: solid 1px white;
+    color: white;
+    outline: none;
+    font-family: oribitron, SCDream4, sans-serif;
+    padding: 10px;
+    margin-top: 30px;
+    resize: none;
+    height: 400px;
+}
+
+.add-post-content form textarea:focus {
+    border: solid 1px red;
+}
+
+.add-post-content form .post-find {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.add-post-content form .post-find .find-btn {
+    font-family: SCDream4, sans-serif;
+    border: solid 1px red;
+    background-color: transparent;
+    color: red;
+    padding: 5px 10px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-post-content form .post-find .post-save-btn {
+    font-family: SCDream4, sans-serif;
+    border: solid 1px white;
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/*---------------------------- add-post-popup ----------------------------*/
+
+.find-movie-popup {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    background-color: black;
+    border: solid 1px white;
+    left: 30%;
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.find-movie-popup-close {
+    visibility: hidden;
+}
+
+.popup-background-show {
+    visibility: visible;
+    position: absolute;
+    width: 100%;
+    backdrop-filter: blur(1px);
+    height: 100%;
+}
+
+.find-movie-popup .popup-close {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.find-movie-popup .popup-close .popup-close-btn {
+    background-color: transparent;
+    font-family: SCDream6, sans-serif;
+    color: white;
+    border: none;
+    font-size: 23px;
+    margin: 20px 20px 0 0;
+    cursor: pointer;
+}
+
+.find-movie-popup .search {
+    display: flex;
+    padding: 20px 0;
+    justify-content: center;
+}
+
+.find-movie-popup .search input {
+    font-family: oribitron, sans-serif;
+    background-color: transparent;
+    color: white;
+    border-bottom: 1px solid red;
+    border-left: 1px solid red;
+    border-top: 1px solid red;
+    border-right: none;
+    padding: 10px;
+    width: 380px;
+    outline: none;
+}
+
+.find-movie-popup .search .search-btn {
+    background-color: transparent;
+    color: white;
+    font-family: SCDream4, sans-serif;
+    border-left: none;
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    border-top: 1px solid red;
+    cursor: pointer;
+}
+
+.find-movie-popup .search button img {
+    width: 20px;
+    height: auto;
+}
+
+.find-movie-popup .find-list-table {
+    color: white;
+    font-family: SCDream4, oribitron, sans-serif;
+    padding: 0 30px 30px 30px;
+    width: 100%;
+    margin-bottom: 13px;
+    table-layout: fixed;
+}
+
+.find-movie-popup .find-list-table thead tr th{
+    font-size: 12px;
+    padding: 12px 0;
+}
+
+.find-movie-popup .find-list-table tbody tr td{
+    font-size: 13px;
+    padding: 12px 0;
+    border-top: 1px solid #6b6b6b;
+    text-align: center;
+}
+
+.find-movie-popup .find-list-table tbody tr td a:hover{
+    text-decoration: underline;
+}
+
+.popup-background {
+    visibility: hidden;
+}
+
+.movie-table {
+    display: flex;
+    height: 70%;
+    overflow: scroll;
+}
+
+.text-hidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*---------------------------- pagination ----------------------------*/
+
+.pagination {
+    color: white;
+    font-family: oribitron, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination a {
+    padding: 0 15px;
 }

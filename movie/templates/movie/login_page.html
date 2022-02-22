@@ -1,14 +1,15 @@
 {% extends 'movie/header.html' %}
 
 {% block content %}
-    <div class="login-form">
+    <form method="post" class="login-form" action="{% url 'login' %}">
         <h1 class="form-title">LOGIN</h1>
-        <input type="email" name="" id="email" placeholder="EMAIL" autocomplete="off">
-        <input type="password" name="" id="password" placeholder="PASSWORD" autocomplete="off">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="ID" autocomplete="off">
+        <input type="password" name="password" placeholder="PASSWORD" autocomplete="off">
         <div class="sign-up">
             <p>NO ACCOUNT?</p>
             <a class="sign-up-btn" href="{% url 'sign_up' %}">SIGN UP</a>
         </div>
         <button type="submit">SIGN IN</button>
-    </div>
+    </form>
 {% endblock %}

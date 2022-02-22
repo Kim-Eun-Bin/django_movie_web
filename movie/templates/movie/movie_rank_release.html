@@ -1,0 +1,58 @@
+{% extends 'movie/header.html' %}
+
+{% block content %}
+    <div class="movie-list">
+        <div class="movie-list-title">
+            <h1>현재 상영영화</h1>
+            <p>✓개봉순</p>
+        </div>
+        <ul>
+            {% for movie in movie_info %}
+                <li class="movie-info">
+                    <div>
+                        <img src="{{ movie.img }}" class="movie-img"  alt="movie_img"/>
+                    </div>
+                    <div>
+                        <div class="l-flex-row">
+                            <p class="f-17">{{ movie.title }}</p>
+                            <p>{{ movie.age }}</p>
+                        </div>
+                        <div class="l-flex-row">
+                            <span class="st_off">🤍 🤍 🤍 🤍 🤍<span class="st_on" style="width: {{ movie.rating_percent }}%">❤️ ❤️ ️❤️ ️❤️ ️❤️</span></span>
+                            <p class="movie_rating">{{ movie.rating }}</p>
+                        </div>
+                        <div class="l-flex-row">
+                            <p class="w-30">개요</p>
+                            <p>{{ movie.genre }}</p>
+                        </div>
+                        <div class="l-flex-row">
+                            <p class="w-30">감독</p>
+                            <p>{{ movie.director }}</p>
+                        </div>
+                        {% if movie.actor != '' %}
+                            <div class="l-flex-row">
+                                <p class="w-30">출연</p>
+                                <p class="movie_actor">{{ movie.actor }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            {% if movie_info.has_previous %}
+                <a href="/movie/rank/release?page={{movie_info.previous_page_number}}"><</a>
+            {% endif %}
+            {% for page in movie_info.paginator.page_range %}
+                {% if page == movie_info.number %}
+                    <a href="/movie/rank/release?page={{page}}" style="color: red">{{page}}</a>
+                {% else %}
+                    <a href="/movie/rank/release?page={{page}}">{{page}}</a>
+                {% endif %}
+            {% endfor %}
+            {% if movie_info.has_next %}
+                <a href="/movie/rank/release?page={{movie_info.next_page_number}}">></a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
