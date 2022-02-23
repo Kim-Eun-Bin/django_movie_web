@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>movie</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
     <div class="navbar">
@@ -19,11 +21,11 @@
                     <li><a href="{% url 'movie_rank_like' %}">좋아요순</a></li>
                 </ul>
             </li>
-            <li class="nav-item"><a href="{% url 'movie_post' %}">평점 / 리뷰</a></li>
+            <li class="nav-item"><a href="{% url 'movie_review_list' %}">평점 / 리뷰</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <p>{{ user.first_name }}{{ user.last_name }}님</p>
-                    <a class='logout-btn' href="{% url 'logout' %}">LOGOUT</a>
+                    <a class='logout-btn' href="{% url 'user_logout' %}">LOGOUT</a>
                 </li>
             {% else %}
                 <li class="nav-item login-btn"><a href="{% url 'login' %}">LOGIN</a></li>

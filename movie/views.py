@@ -1,12 +1,14 @@
+import json
+
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import requests
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.utils import timezone
-
 from .models import Post, Movie_info
+from datetime import date
 
 
 def user_logout(request):
@@ -299,7 +301,7 @@ def movie_rank_reservation(request):
         return render(request, 'movie/movie_rank_reservation.html', {'movie_info': movies})
 
 
-def movie_post(request):
+def movie_review_list(request):
     # url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
     # key = "be35b97e5763c4cc4fcf49c888de0390"
     #
@@ -326,41 +328,110 @@ def movie_post(request):
     #             )
     #             movie.save()
     #
-    #     return render(request, 'movie/movie_post_page.html')
+    #     return render(request, 'movie/movie_review_page.html')
     # else:
     #     print('Error Code ', res.status_code)
+    posts = Post.objects.all()
 
-    return render(request, 'movie/movie_post_page.html')
+    for post in posts:
+        post.created_at = post.created_at.strftime("%Y-%m-%d")
+
+    return render(request, 'movie/movie_review_page.html', {'post_list': posts})
 
 
-def new_post(request):
+def post_review(request):
     movie_list = Movie_info.objects.all().order_by('movie_title')
     movie_id = request.GET.get("movie")
 
     if movie_id:
         movie = Movie_info.objects.filter(id=movie_id).values()[0]
-        return render(request, 'movie/add_post.html', {'movie_info': movie_list, 'selected_item': movie})
+        return render(request, 'movie/post_review.html', {'movie_info': movie_list, 'selected_item': movie})
 
-    return render(request, 'movie/add_post.html', {'movie_info': movie_list})
+    return render(request, 'movie/post_review.html', {'movie_info': movie_list})
 
 
 def add_new_post(request):
-    print("save_post >>>>>>>>>>")
+    if request.method == 'POST':
+        movie = Movie_info.objects.get(pk=request.POST['movie_id'])
 
-    # if request.method == 'POST':
-    #     print(">>>>> 2")
-    #     print("movie_id >>>>>>>> ", request.POST['movie_id'])
-    #     print("author >>>>>>>> ", request.user)
-    #     print("title >>>>>>>> ", request.POST['title'])
-    #     print("content >>>>>>>> ", request.POST['content'])
-    #     # post = Post.objects.create(
-    #     #     movie_id=request.POST['username'],
-    #     #     author=request.POST['password'],
-    #     #     title=request.POST['email'],
-    #     #     content=request.POST['first_name'],
-    #     #     created_date=timezone.now())
-    #     #
-    #     # post.save()
-    #     return redirect('/movie/post')
+        post = Post.objects.create(
+            movie_id=movie,
+            author=request.user,
+            title=request.POST['title'],
+            content=request.POST['content'],
+        )
 
-    return render(request, 'movie/movie_post_page.html')
+        post.save()
+        return redirect('/movie/review_list')
+
+    return render(request, 'movie/post_review.html')
+
+
+def search_review(request):
+    if request.method == 'POST':
+        keyword = request.POST['keyword']
+
+        if keyword == "all":
+            posts = Post.objects.all()
+
+            data = []
+            for post in posts:
+                data.append({
+                    'id': post.id,
+                    'title': post.title,
+                    'content': post.content,
+                    'author': post.author.username,
+                    'movie_title': post.movie_id.movie_title,
+                    'created_at': post.created_at.strftime('%Y-%m-%d')
+                })
+            return HttpResponse(json.dumps(data), content_type='application/json')
+        else:
+            posts = Post.objects.filter(movie_id__movie_title__startswith=keyword)
+
+            data = []
+            for post in posts:
+                data.append({
+                    'id': post.id,
+                    'title': post.title,
+                    'content': post.content,
+                    'author': post.author.username,
+                    'movie_title': post.movie_id.movie_title,
+                    'created_at': post.created_at.strftime('%Y-%m-%d')
+                })
+            return HttpResponse(json.dumps(data), content_type='application/json')
+
+    return render(request, 'movie/movie_review_page.html')
+
+
+def search_movie(request):
+    if request.method == 'POST':
+        keyword = request.POST['keyword']
+
+        if keyword == "all":
+            movies = Movie_info.objects.all().order_by('movie_title')
+
+            data = []
+            for movie in movies:
+                data.append({
+                    'id': movie.id,
+                    'movie_title': movie.movie_title,
+                    'prdt_year': movie.prdt_year,
+                    'genre': movie.genre,
+                    'director': movie.director
+                })
+            return HttpResponse(json.dumps(data), content_type='application/json')
+        else:
+            movies = Movie_info.objects.filter(movie_title__startswith=keyword).order_by('movie_title')
+
+            data = []
+            for movie in movies:
+                data.append({
+                    'id': movie.id,
+                    'movie_title': movie.movie_title,
+                    'prdt_year': movie.prdt_year,
+                    'genre': movie.genre,
+                    'director': movie.director
+                })
+            return HttpResponse(json.dumps(data), content_type='application/json')
+    return HttpResponse(json.dumps(dict), content_type='application/json')
+

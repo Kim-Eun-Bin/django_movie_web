@@ -454,6 +454,7 @@ li {
     margin-bottom: 13px;
     table-layout: fixed;
     border-top: solid 1px #c9c9c9;
+    text-align: center;
 }
 
 .movie-score-list .score-table thead tr th {
@@ -538,6 +539,10 @@ li {
     color: white;
     padding: 10px;
     cursor: pointer;
+}
+
+.f-14 {
+    font-size: 14px;
 }
 
 /*---------------------------- add-post-popup ----------------------------*/
