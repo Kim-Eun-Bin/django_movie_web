@@ -50,7 +50,7 @@
                         <p class="author">{{ comment.author }}</p>
                         <p class="date">∙ {{ comment.created_at }}</p>
                         {% if comment.author == request.user %}
-                            <a href="">삭제</a>
+                            <a href="{% url 'delete_comment' pk=comment.id %}">삭제</a>
                         {% endif %}
                     </div>
                     <p class="content">{{ comment.text }}</p>

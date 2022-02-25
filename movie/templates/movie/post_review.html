@@ -141,10 +141,10 @@
                         let txt = "";
                         let id_list = [];
                         for(let obj of data) {
-                            txt += '<tr class="find-list"><td class="text-hidden">'
+                            txt += '<tr class="find-list" style="height: 30px"><td class="text-hidden" height="30">'
                             txt += '<a class="a_movie_title" href="/movie/review_list/post?movie_id=' + obj['id'] + '&movie_title=' + obj['movie_title'] + '">' + obj['movie_title'] + '</a></td>';
-                            txt += '<td class="text-hidden">' + obj['prdt_year'] + '</td>';
-                            txt += '<td class="text-hidden">' + obj['director'] + '</td></tr>';
+                            txt += '<td class="text-hidden" height="30">' + obj['prdt_year'] + '</td>';
+                            txt += '<td class="text-hidden" height="30">' + obj['director'] + '</td></tr>';
                             id_list.push(obj['id'])
                         }
                         $('tbody').append(txt);

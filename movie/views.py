@@ -318,7 +318,6 @@ def movie_review_detail(request, pk):
 
     for comment in comment_list:
         comment.created_at = comment.created_at.strftime("%Y-%m-%d")
-        print(comment.author)
 
     author = User.objects.filter(id=post['author_id']).values()[0]['username']
 
@@ -551,6 +550,16 @@ def add_comment(request, pk):
 
         comment.save()
 
-        return redirect('/movie/review_list', pk=pk)
+        return redirect('movie_review_detail', pk=pk)
 
-    return redirect('/movie/review_list', pk=pk)
+    return redirect('movie_review_detail', pk=pk)
+
+
+def delete_comment(request, pk):
+    comments = Comment.objects.filter(pk=pk).values()[0]
+    post_id = comments['post_id']
+
+    comment = Comment.objects.get(pk=pk)
+    comment.delete()
+
+    return redirect('movie_review_detail', pk=post_id)
