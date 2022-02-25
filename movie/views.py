@@ -563,3 +563,12 @@ def delete_comment(request, pk):
     comment.delete()
 
     return redirect('movie_review_detail', pk=post_id)
+
+
+def my_page(request):
+    posts = Post.objects.filter(author=request.user).order_by('-created_at')
+
+    for post in posts:
+        post.created_at = post.created_at.strftime("%Y-%m-%d")
+
+    return render(request, 'movie/my_page.html', {'post_list': posts})

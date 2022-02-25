@@ -24,7 +24,7 @@
             <li class="nav-item"><a href="{% url 'movie_review_list' %}">평점 / 리뷰</a></li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <p>{{ user.first_name }}{{ user.last_name }}님</p>
+                    <a href="{% url 'my_page' %}">{{ user.first_name }}{{ user.last_name }}님</a>
                     <a class='logout-btn' href="{% url 'user_logout' %}">LOGOUT</a>
                 </li>
             {% else %}

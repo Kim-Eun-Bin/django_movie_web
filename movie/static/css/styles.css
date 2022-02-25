@@ -127,7 +127,7 @@ li {
     padding: 20px 40px;
 }
 
-.navbar .navbar-nav .nav-item p {
+.navbar .navbar-nav .nav-item a {
     font-family: oribitron, SCDream4, sans-serif;
     color: white;
     margin: 0 10px 0 0;
@@ -142,7 +142,7 @@ li {
     padding: 4px;
 }
 
-.navbar .navbar-nav .nav-item p:hover {
+.navbar .navbar-nav .nav-item a:hover {
     text-decoration: underline;
 }
 
@@ -918,4 +918,78 @@ li {
     padding: 10px 0;
     width: 70%;
     border-top: 1px solid #6b6b6b;
+}
+
+/*---------------------------- my-page ----------------------------*/
+
+.my-page {
+    font-family: oribitron, SCDream4, sans-serif;
+    margin: 100px 30px 0 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(17, 17, 17, 0.9);
+    color: white;
+}
+
+.my-page .user-info {
+    border: 1px solid red;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+}
+
+.my-page .user-info h1 {
+    font-size: 23px;
+    margin: 10px 0;
+}
+
+.my-page .user-info p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.my-page .user-post {
+    border: 1px solid white;
+    margin-left: 20px;
+    padding: 20px;
+}
+
+.user-post .score-table {
+    color: white;
+    width: 100%;
+    margin-bottom: 13px;
+    table-layout: fixed;
+    border-top: solid 1px #c9c9c9;
+    text-align: center;
+}
+
+.user-post .score-table thead tr th {
+    border-bottom: solid 1px #c9c9c9;
+    padding: 10px 0;
+}
+
+.user-post .score-table tbody tr td {
+    border-bottom: 1px solid #6b6b6b;
+    padding: 20px 0;
+}
+
+.user-post .score-table tbody tr td .st_off {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    color: red;
+    white-space: nowrap;
+}
+
+.user-post .score-table tbody tr td .st_off .st_on {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    left: 8px;
 }

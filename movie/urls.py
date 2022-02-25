@@ -23,5 +23,6 @@ urlpatterns = [
     path('review_list/post/add/search', views.search_movie, name='search_movie'),
     path('review_list/post/comment/<int:pk>', views.add_comment, name='add_comment'),
     path('review_list/post/comment/delete/<int:pk>', views.delete_comment, name='delete_comment'),
+    path('my_page', views.my_page, name='my_page'),
 ]
 
