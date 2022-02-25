@@ -11,9 +11,14 @@ urlpatterns = [
     path('signup', views.user_sign_up, name='sign_up'),
     path('logout', views.user_logout, name='user_logout'),
     path('review_list', views.movie_review_list, name='movie_review_list'),
+    path('review_list/<int:pk>', views.movie_review_detail, name='movie_review_detail'),
     path('review_list/post', views.post_review, name='post_review'),
     path('review_list/post/add', views.add_new_post, name='add_new_post'),
+    path('review_list/post/delete/<int:pk>', views.delete_post, name='delete_post'),
+    path('review_list/post/edit/<int:pk>', views.edit_post, name='edit_post'),
+    path('review_list/edit/<int:pk>', views.edit_post_save, name='edit_post_save'),
     path('review_list/search', views.search_review, name='search_review'),
     path('review_list/post/add/search', views.search_movie, name='search_movie'),
+    path('review_list/post/<int:pk>', views.add_comment, name='add_comment'),
 ]
 

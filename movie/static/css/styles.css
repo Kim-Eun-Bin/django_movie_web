@@ -215,15 +215,16 @@ li {
     position: relative;
 }
 
-.l-flex-row .st_off {
+.movie-info div .l-flex-row .st_off {
     float: left;
     overflow: hidden;
     width: 100px;
     position: relative;
     margin-right: 10px;
+    color: red;
 }
 
-.l-flex-row .st_on {
+.movie-info div .l-flex-row .st_on {
     display: block;
     overflow: hidden;
     position: absolute;
@@ -235,6 +236,11 @@ li {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.movie-detail-link:hover {
+    text-decoration: underline;
+    cursor: initial;
 }
 
 .movie-list .movie-info div .l-flex-row .movie_rating {
@@ -388,7 +394,7 @@ li {
     cursor: pointer;
 }
 
-/*---------------------------- score-list ----------------------------*/
+/*---------------------------- review-list ----------------------------*/
 
 .movie-score-list {
     font-family: oribitron, SCDream4, sans-serif;
@@ -406,6 +412,10 @@ li {
     padding: 10px 30px 30px 0;
 }
 
+.movie-score-list .search form {
+    display: flex;
+}
+
 .movie-score-list .search input {
     font-family: oribitron, sans-serif;
     background-color: transparent;
@@ -415,7 +425,7 @@ li {
     border-top: 1px solid red;
     border-right: none;
     padding: 10px;
-    width: 20%;
+    width: 100%;
     outline: none;
 }
 
@@ -465,6 +475,24 @@ li {
 .movie-score-list .score-table tbody tr td {
     border-bottom: 1px solid #6b6b6b;
     padding: 20px 0;
+}
+
+.movie-score-list .score-table tbody tr td .st_off {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    color: red;
+    white-space: nowrap;
+}
+
+.movie-score-list .score-table tbody tr td .st_off .st_on {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    left: 8px;
 }
 
 /*---------------------------- add-post ----------------------------*/
@@ -543,6 +571,31 @@ li {
 
 .f-14 {
     font-size: 14px;
+}
+
+.add-post-content form .post-title-rating {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-post-content form .post-title-rating p {
+    margin: 0 20px 0 0;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.add-post-content form .post-title-rating button {
+    background-color: transparent;
+    color: red;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+.add-post-content form input {
+    width: 70%;
+    margin-right: 20px;
 }
 
 /*---------------------------- add-post-popup ----------------------------*/
@@ -675,4 +728,194 @@ li {
 
 .pagination a {
     padding: 0 15px;
+}
+
+/*---------------------------- movie-review-detail ----------------------------*/
+
+.movie-review-detail {
+    font-family: oribitron, SCDream4, sans-serif;
+    margin: 100px 30px 0 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(17, 17, 17, 0.9);
+    color: white;
+}
+
+.review_detail_link:hover {
+    text-decoration: underline;
+}
+
+.movie-review-detail .post-title {
+    margin: 0;
+    padding: 20px 0 15px 0;
+}
+
+.movie-review-detail .post-author {
+    font-size: 14px;
+    color: #FFFFFF99;
+    padding-bottom: 20px;
+    border-bottom: 1px solid white;
+    margin-bottom: 0;
+}
+
+.movie-review-detail .post-author a {
+    font-family: SCDream4, sans-serif;
+    font-size: 14px;
+    color: #FFFFFF99;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.movie-review-detail .post-author a:hover {
+    text-decoration: underline;
+}
+
+.movie-review-detail .post-content-title {
+    width: fit-content;
+    margin: 20px 0 0 0;
+    padding: 10px;
+    border-top: solid 1px white;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+}
+
+.movie-review-detail .post-content {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid white;
+}
+
+.movie-review-detail .st_off {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 100px;
+    color: red;
+    white-space: nowrap;
+}
+
+.movie-review-detail .st_on {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+}
+
+.movie-info {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border-bottom: 1px solid white;
+}
+
+.movie-info img {
+    margin-right: 20px;
+}
+
+.movie-info div .movie-title {
+    font-size: 20px;
+}
+
+.movie-info div p {
+    margin: 7px 15px 7px 0;
+}
+
+.movie-info .movie-rating .st_off {
+    float: left;
+    overflow: hidden;
+    width: 100px;
+    position: relative;
+    margin-right: 10px;
+    color: red;
+    display: flex;
+    align-items: center;
+}
+
+.movie-info .movie-rating .st_off .st_on {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    top: 8px;
+    white-space: nowrap;
+}
+
+/*---------------------------- movie-review-detail-comment ----------------------------*/
+
+.detail-comment .comment-n {
+    margin-top: 50px;
+    font-size: 15px;
+}
+
+.detail-comment form {
+    border-top: 1px solid #6b6b6b;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 10px;
+    width: 70%;
+}
+
+.detail-comment form textarea {
+    background-color: transparent;
+    color: white;
+    border: solid 1px red;
+    font-family: SCDream4, oribitron, sans-serif;
+    width: 97%;
+    padding: 10px;
+    height: 70px;
+    margin-top: 20px;
+    resize: none;
+}
+
+.detail-comment form button {
+    margin-top: 20px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    font-family: SCDream4, oribitron, sans-serif;
+    cursor: pointer;
+    width: fit-content;
+    padding: 10px 15px;
+}
+
+.l-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.l-flex .author {
+    font-size: 14px;
+}
+
+.l-flex .date {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #6b6b6b;
+}
+
+.l-flex a {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #6b6b6b;
+}
+
+.l-flex a:hover {
+    text-decoration: underline;
+}
+
+.detail-comment div .content {
+    font-size: 15px;
+    margin: 0;
+}
+
+.detail-comment .comment-list {
+    margin-top: 20px;
+    padding: 10px 0;
+    width: 70%;
+    border-top: 1px solid #6b6b6b;
 }

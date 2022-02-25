@@ -1,13 +1,17 @@
 {% extends 'movie/header.html' %}
 
+{% load static %}
 {% block content %}
     <div class="movie-score-list">
         <div class="search">
             {% if user.is_authenticated %}
                 <a href="{% url 'post_review' %}" class="add-post">글쓰기</a>
             {% endif %}
-            <input id="search_keyword" type="text" placeholder="search">
-            <button id="search_btn" type="submit" class="search-btn"><img src="../../static/image/magnifying-glass.png"></button>
+            <form method="post" action="{% url 'search_review' %}">
+                {% csrf_token %}
+                <input id="search_keyword" name="keyword" type="text" placeholder="search" autocomplete="off">
+                <button id="search_btn" type="submit" class="search-btn"><img src="{% static 'image/magnifying-glass.png' %}"></button>
+            </form>
         </div>
         <table class="score-table">
             <thead>
@@ -22,46 +26,15 @@
             <tbody>
                 {% for post in post_list %}
                     <tr>
-                        <td class="f-14" style="color: red">{{ post.movie_id.movie_title }}</td>
-                        <td>{{ post.title }}</td>
+                        <td class="f-14" style="color: red">{{ post.movie_title }}</td>
+                        <td><a class="review_detail_link" href="{% url 'movie_review_detail' post.id %}">{{ post.title }}</a></td>
                         <td class="f-14">{{ post.author }}</td>
                         <td class="f-14">{{ post.created_at }}</td>
-                        <td>❤️❤️🤍🤍🤍</td>
+                        <td><span class="st_off">☆ ☆ ☆ ☆ ☆<span class="st_on" style="width: {{ post.rating }}%">★ ★ ★ ★ ★</span></span></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('#search_btn').click(function() {
-                let movie_title = $('#search_keyword').val();
-                if(movie_title === "") {
-                    movie_title = "all";
-                }
-                $('tbody').empty()
-                $.ajax({
-                    url: "{% url 'search_review' %}",
-                    type: "post",
-                    data: {
-                        csrfmiddlewaretoken : '{{ csrf_token }}',
-                        keyword : movie_title
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        let txt = "";
-                        for(let obj of data) {
-                            txt += '<tr><td class="f-14" style="color: red">' + obj['movie_title'] + '</td>';
-                            txt += '<td>' + obj['title'] + '</td>';
-                            txt += '<td class="f-14">' + obj['author'] + '</td>';
-                            txt += '<td class="f-14">' + obj['created_at'] + '</td>';
-                            txt += '<td>' + "❤️❤️🤍🤍🤍" + '</td></tr>';
-                        }
-                        $('tbody').append(txt);
-                    }
-                })
-            })
-        })
-    </script>
 {% endblock %}
 

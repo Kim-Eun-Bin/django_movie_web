@@ -1,0 +1,62 @@
+{% extends 'movie/header.html' %}
+
+{% block content %}
+    <div class="movie-review-detail">
+        <span class="st_off">☆ ☆ ☆ ☆ ☆<span class="st_on" style="width: {{ post.rating }}%">★ ★ ★ ★ ★</span></span>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <p class="post-author">by {{ post.author }} ∙ {{ post.created_at }}
+            {% if user.username == post.author %}
+                <a href="{% url 'edit_post' pk=post.id %}">수정</a>
+                |
+                <a href="{% url 'delete_post' pk=post.id %}">삭제</a>
+            {% endif %}
+        </p>
+        <div class="movie-info">
+            <img width="150px" height="240px" src="{{ movie.img }}" />
+            <div>
+                <p class="movie-title"><h1>{{ movie.movie_title }}</h1></p>
+                <div style="display: flex">
+                    <p>제작연도</p>
+                    <p>{{ movie.movie_year }}</p>
+                </div>
+                {% if movie.movie_director %}
+                    <div style="display: flex">
+                        <p>감독</p>
+                        <p>{{ movie.movie_director }}</p>
+                    </div>
+                {% endif %}
+                <div style="display: flex">
+                    <p>출연</p>
+                    <p>{{ movie.movie_actor }}</p>
+                </div>
+                <div class="movie-rating" style="display: flex">
+                    <p>평점</p>
+                    <span class="st_off">☆ ☆ ☆ ☆ ☆<span class="st_on" style="width: {{ movie.movie_rating }}%">★ ★ ★ ★ ★</span></span>
+                </div>
+            </div>
+        </div>
+        <p class="post-content-title">감상평</p>
+        <p class="post-content" style="white-space: pre-line">{{ post.content }}</p>
+        <div class="detail-comment">
+            <p class="comment-n">댓글 3</p>
+            <form method="post" action="{% url 'add_comment' pk=post.id %}">
+                {% csrf_token %}
+                <textarea name="comment-content" placeholder="여러분의 소중한 댓글을 입력해주세요."></textarea>
+                <button type="submit">등록</button>
+            </form>
+            {% for comment in comment_list %}
+                <div class="comment-list">
+                    <div class="l-flex">
+                        <p class="author">{{ comment.author }}</p>
+                        <p class="date">∙ {{ comment.created_at }}</p>
+                        {% if comment.author == request.user %}
+                            <a href="">삭제</a>
+                        {% endif %}
+                    </div>
+                    <p class="content">{{ comment.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

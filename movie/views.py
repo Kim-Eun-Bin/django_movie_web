@@ -2,13 +2,14 @@ import json
 
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Post, Movie_info
-from datetime import date
+import re
+
+from movie.models import Post, Comment
 
 
 def user_logout(request):
@@ -283,6 +284,7 @@ def movie_rank_reservation(request):
 
             movie_info_dict['title'] = title_list[i].text
             movie_info_dict['detail_url'] = title_list[i]['href']
+            movie_info_dict['code'] = re.search(r'\d+', movie_info_dict['detail_url']).group(0)
             movie_info_dict['age'] = age_list[i].text
             movie_info_dict['img'] = img_list[i]['src']
             movie_info_dict['rating'] = rating_list[i].text
@@ -302,36 +304,7 @@ def movie_rank_reservation(request):
 
 
 def movie_review_list(request):
-    # url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json"
-    # key = "be35b97e5763c4cc4fcf49c888de0390"
-    #
-    # req_param = {"key": key, 'itemPerPage': 100}
-    #
-    # res = requests.get(url, params=req_param)
-    #
-    # if res.ok:
-    #     movie_list = res.json()['movieListResult']['movieList']
-    #
-    #     for item in movie_list:
-    #         if item['directors']:
-    #             item['directors'] = item['directors'][0]['peopleNm']
-    #         else:
-    #             item['directors'] = ''
-    #
-    #     for item in movie_list:
-    #         if "성인물" not in item['genreAlt']:
-    #             movie = Movie_info.objects.create(
-    #                 movie_title=item['movieNm'],
-    #                 prdt_year=item['prdtYear'],
-    #                 genre=item['genreAlt'],
-    #                 director=item['directors'],
-    #             )
-    #             movie.save()
-    #
-    #     return render(request, 'movie/movie_review_page.html')
-    # else:
-    #     print('Error Code ', res.status_code)
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
 
     for post in posts:
         post.created_at = post.created_at.strftime("%Y-%m-%d")
@@ -339,23 +312,116 @@ def movie_review_list(request):
     return render(request, 'movie/movie_review_page.html', {'post_list': posts})
 
 
+def movie_review_detail(request, pk):
+    post = Post.objects.filter(id=pk).values()[0]
+    comment_list = Comment.objects.filter(post=pk)
+
+    for comment in comment_list:
+        comment.created_at = comment.created_at.strftime("%Y-%m-%d")
+        print(comment.author)
+
+    author = User.objects.filter(id=post['author_id']).values()[0]['username']
+
+    img_url = 'https://movie.naver.com/movie/bi/mi/basic.naver?code=' + post['movie_id']
+    img_req_header = {
+        'user-agent': 'ozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'
+    }
+
+    img_res = requests.get(img_url, headers=img_req_header)
+    img_html = img_res.text
+
+    url = "https://openapi.naver.com/v1/search/movie.json"
+
+    client_id = "x0mhpyDwAQs0hQkATDat"
+    client_secret = "0C7HGzonDK"
+
+    # request header
+    req_header = {
+        "X-Naver-Client-Id": client_id,
+        "X-Naver-Client-Secret": client_secret
+    }
+    # request parameter
+    req_param = {"query": post['movie_title']}
+    res = requests.get(url, headers=req_header, params=req_param)
+
+    movie_data = []
+    if res.ok:
+        movie = res.json()['items'][0]
+
+        if img_res.ok:
+            soup = BeautifulSoup(img_html, 'html.parser')
+            img = soup.select("div.mv_info_area div.poster > a > img")
+            img_resource = img[0]['src']
+
+            if re.search(r'\d+', movie['link']).group(0) == post['movie_id']:
+                movie_data.append({
+                    'id': post['movie_id'],
+                    'movie_title': post['movie_title'],
+                    'img': img_resource,
+                    'movie_year': movie['pubDate'],
+                    'movie_director': str(movie['director']).replace("|", " "),
+                    'movie_actor' : str(movie['actor']).replace("|", " "),
+                    'movie_rating' : float(movie['userRating']) * 10
+                })
+    else:
+        print('Error Code ', res.status_code)
+
+    post_dict = {
+        'id': post['id'],
+        'title': post['title'],
+        'rating': post['rating'],
+        'content': str(post['content']).replace("\n", "\r\n"),
+        'author': author,
+        'created_at': post['created_at'].strftime("%Y-%m-%d")
+    }
+
+    return render(request, 'movie/movie_review_detail_page.html', {'post': post_dict, 'movie': movie_data[0], 'comment_list': comment_list})
+
+
 def post_review(request):
-    movie_list = Movie_info.objects.all().order_by('movie_title')
-    movie_id = request.GET.get("movie")
+    movie_id = request.GET.get("movie_id")
+    movie_title = request.GET.get("movie_title")
+    movie_list = {}
 
     if movie_id:
-        movie = Movie_info.objects.filter(id=movie_id).values()[0]
-        return render(request, 'movie/post_review.html', {'movie_info': movie_list, 'selected_item': movie})
+        url = "https://openapi.naver.com/v1/search/movie.json"
+
+        client_id = "x0mhpyDwAQs0hQkATDat"
+        client_secret = "0C7HGzonDK"
+
+        # request header
+        req_header = {
+            "X-Naver-Client-Id": client_id,
+            "X-Naver-Client-Secret": client_secret
+        }
+        # request parameter
+        req_param = {"query": movie_title}
+
+        res = requests.get(url, headers=req_header, params=req_param)
+        if res.ok:
+            movies = res.json()
+
+            data = {}
+            for movie in movies['items']:
+                if re.search(r'\d+', movie['link']).group(0) == movie_id:
+                    data = {
+                        'id': movie_id,
+                        'movie_title': movie_title,
+                    }
+
+            return render(request, 'movie/post_review.html', {'movie_info': movie_list, 'selected_item': data})
+        else:
+            print('Error Code ', res.status_code)
 
     return render(request, 'movie/post_review.html', {'movie_info': movie_list})
 
 
 def add_new_post(request):
     if request.method == 'POST':
-        movie = Movie_info.objects.get(pk=request.POST['movie_id'])
-
         post = Post.objects.create(
-            movie_id=movie,
+            movie_id=request.POST['movie_id'],
+            movie_title=request.POST['movie_title'],
+            rating=request.POST['rating'],
             author=request.user,
             title=request.POST['title'],
             content=request.POST['content'],
@@ -372,7 +438,7 @@ def search_review(request):
         keyword = request.POST['keyword']
 
         if keyword == "all":
-            posts = Post.objects.all()
+            posts = Post.objects.all().order_by('-created_at')
 
             data = []
             for post in posts:
@@ -381,12 +447,14 @@ def search_review(request):
                     'title': post.title,
                     'content': post.content,
                     'author': post.author.username,
-                    'movie_title': post.movie_id.movie_title,
+                    'movie_title': post.movie_title,
+                    'movie_id': post.movie_id,
+                    'rating': post.rating,
                     'created_at': post.created_at.strftime('%Y-%m-%d')
                 })
-            return HttpResponse(json.dumps(data), content_type='application/json')
+            return render(request, 'movie/movie_review_page.html', {'post_list': data})
         else:
-            posts = Post.objects.filter(movie_id__movie_title__startswith=keyword)
+            posts = Post.objects.filter(movie_title__startswith=keyword).order_by('-created_at')
 
             data = []
             for post in posts:
@@ -395,10 +463,12 @@ def search_review(request):
                     'title': post.title,
                     'content': post.content,
                     'author': post.author.username,
-                    'movie_title': post.movie_id.movie_title,
+                    'movie_title': post.movie_title,
+                    'movie_id': post.movie_id,
+                    'rating': post.rating,
                     'created_at': post.created_at.strftime('%Y-%m-%d')
                 })
-            return HttpResponse(json.dumps(data), content_type='application/json')
+            return render(request, 'movie/movie_review_page.html', {'post_list': data})
 
     return render(request, 'movie/movie_review_page.html')
 
@@ -407,31 +477,80 @@ def search_movie(request):
     if request.method == 'POST':
         keyword = request.POST['keyword']
 
-        if keyword == "all":
-            movies = Movie_info.objects.all().order_by('movie_title')
+        url = "https://openapi.naver.com/v1/search/movie.json"
+
+        client_id = "x0mhpyDwAQs0hQkATDat"
+        client_secret = "0C7HGzonDK"
+
+        # request header
+        req_header = {
+            "X-Naver-Client-Id": client_id,
+            "X-Naver-Client-Secret": client_secret
+        }
+        # request parameter
+        req_param = {"query": keyword, "display": 50}
+
+        res = requests.get(url, headers=req_header, params=req_param)
+        if res.ok:
+            movies = res.json()
 
             data = []
-            for movie in movies:
+            for movie in movies['items']:
                 data.append({
-                    'id': movie.id,
-                    'movie_title': movie.movie_title,
-                    'prdt_year': movie.prdt_year,
-                    'genre': movie.genre,
-                    'director': movie.director
+                    'id': re.search(r'\d+', movie['link']).group(0),
+                    'movie_title': str(movie['title']).replace("<b>", "").replace("</b>", ""),
+                    'prdt_year': movie['pubDate'],
+                    'director': str(movie['director']).replace("|", " ")
                 })
+
             return HttpResponse(json.dumps(data), content_type='application/json')
         else:
-            movies = Movie_info.objects.filter(movie_title__startswith=keyword).order_by('movie_title')
+            print('Error Code ', res.status_code)
 
-            data = []
-            for movie in movies:
-                data.append({
-                    'id': movie.id,
-                    'movie_title': movie.movie_title,
-                    'prdt_year': movie.prdt_year,
-                    'genre': movie.genre,
-                    'director': movie.director
-                })
-            return HttpResponse(json.dumps(data), content_type='application/json')
     return HttpResponse(json.dumps(dict), content_type='application/json')
 
+
+def delete_post(request, pk):
+    post = Post.objects.filter(id=pk)
+    post.delete()
+
+    return redirect('/movie/review_list')
+
+
+def edit_post(request, pk):
+    post = Post.objects.filter(id=pk).values()[0]
+    selected_item = {
+        'id': post['movie_id'],
+        'movie_title': post['movie_title']
+    }
+
+    return render(request, 'movie/edit_post_review.html', {'selected_item': selected_item, 'edit_post': post})
+
+
+def edit_post_save(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    post.rating = request.POST['rating']
+    post.title = request.POST['title']
+    post.content = request.POST['content']
+
+    post.save()
+
+    return redirect('/movie/review_list')
+
+
+def add_comment(request, pk):
+    post = Post.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        comment = Comment.objects.create(
+            post=post,
+            author=request.user,
+            text=request.POST['comment-content']
+        )
+
+        comment.save()
+
+        return redirect('/movie/review_list', pk=pk)
+
+    return redirect('/movie/review_list', pk=pk)

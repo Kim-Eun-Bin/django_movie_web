@@ -1,23 +1,10 @@
 from django.db import models
-from datetime import date
-
-
-class Movie_info(models.Model):
-    # 제목
-    movie_title = models.TextField()
-    # 제작 연도
-    prdt_year = models.TextField()
-    # 장르
-    genre = models.TextField()
-    # 감독
-    director = models.TextField()
-
-    def __str__(self):
-        return self.movie_title
 
 
 class Post(models.Model):
-    movie_id = models.ForeignKey("Movie_info", related_name="movie_info", on_delete=models.CASCADE, db_column="movie_id")
+    movie_id = models.TextField()
+    movie_title = models.TextField()
+    rating = models.TextField()
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
@@ -26,3 +13,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey('movie.Post', on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
